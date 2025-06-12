@@ -1,0 +1,24 @@
+﻿@using Microsoft.JSInterop
+@using stream_multi_cam.Models
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+<div class="video-container" id="@Camera.CameraId">
+    <video id="@($"{Camera.CameraId}_video")" controls autoplay muted width="100%"></video>
+    <canvas id="@($"{Camera.CameraId}_overlay")" class="overlay-canvas"></canvas>
+</div>
+
+@code {
+    [Parameter] public CameraConfig Camera { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool first)
+    {
+        if (first)
+        {
+            // Load HLS.js, attach video src
+            await JS.InvokeVoidAsync("overlay.initPlayer", Camera.CameraId);
+            // Kết nối SignalR
+            await JS.InvokeVoidAsync("overlay.connectHub", Camera.CameraId);
+        }
+    }
+}

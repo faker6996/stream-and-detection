@@ -1,0 +1,42 @@
+﻿@page "/"
+@using Microsoft.JSInterop
+@using stream_multi_cam.Models
+@inject List<CameraConfig> cameraConfigs
+@inject IJSRuntime JS
+
+<h3 class="text-xl font-bold mb-4">Camera Dashboard</h3>
+
+<div class="camera-grid-container">
+    @foreach (var cam in cameraConfigs)
+    {
+        <div class="camera-item">
+            <div class="camera-label">@cam.Location (@cam.CameraId)</div>
+            <video id="@($"{cam.CameraId}_video")"
+                   autoplay
+                   muted
+                   playsinline>
+            </video>
+            <canvas id="@($"{cam.CameraId}_overlay")" class="absolute-overlay"></canvas>
+        </div>
+    }
+</div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Bước 1: Khởi tạo hệ thống overlay (bao gồm SignalR) MỘT LẦN DUY NHẤT.
+            await JS.InvokeVoidAsync("overlay.init");
+
+            // Bước 2: Sau đó, lặp qua và khởi tạo từng camera.
+            foreach (var cam in cameraConfigs)
+            {
+                // Gọi hàm mới để bắt đầu player
+                await JS.InvokeVoidAsync("overlay.startPlayer", cam.CameraId);
+                // Gọi hàm mới để tham gia group (thay thế cho connectHub cũ)
+                await JS.InvokeVoidAsync("overlay.joinGroup", cam.CameraId);
+            }
+        }
+    }
+}

@@ -1,0 +1,68 @@
+# .gitignore for .NET / Visual Studio projects
+
+## General
+*.sln.DotSettings.user
+*.swp
+
+## Visual Studio / Rider specific
+# Ignores user-specific settings, open files, and other IDE metadata.
+.vs/
+.idea/
+*.suo
+*.user
+*.[Pp]ublish.xml
+*.pubxml
+*.publishproj
+
+## Build results
+# Ignores all compiled binaries and intermediate object files.
+[Bb]in/
+[Oo]bj/
+build/
+Build/
+build-results/
+
+## NuGet packages
+# Ignores downloaded packages and package cache.
+*.nupkg
+*.snupkg
+packages/
+# Allow local override of global packages config
+**/packages.config
+
+## Test results
+*.trx
+*.test-adapter.log
+*.testsettings
+*.CodeCoverage?*
+
+## OS generated files
+# Windows
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+## User Secrets
+# Exclude the secrets file from source control, which is managed by the .NET CLI user-secrets tool.
+**/secrets.json
+
+## Project-specific files for this project
+# Log files
+[Ll]ogs/
+*.log
+
+# Debug images folder created during testing
+[Dd]ebug_images/
+
+# HLS streaming files (generated at runtime)
+wwwroot/hls/
+
+# Front-end dependencies (if any)
+node_modules/
+npm-debug.log*
+yarn-error.log
